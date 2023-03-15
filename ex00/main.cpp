@@ -1,54 +1,5 @@
 # include "BitcoinExchange.hpp"
 
-void	throw_errr(char *msg, char *str)
-{
-	while (*msg)
-		std::cerr << *msg++;
-	if (str) {
-		while (*str)
-			std::cerr << *str++;
-	}
-	std::cerr << std::endl;
-	std::exit (1);
-}
-
-bool	is_digite(char *str)
-{
-	for (int i = 0; str[i]; i++)
-		if (!isdigit(str[i]))
-			return (false);
-	return (true);
-}
-
-bool is_valid_float(char* str) {
-	int flag = 0;
-	for (int i = 0; str[i]; i++) {
-		if (!isdigit(str[i]) && str[i] != '.')
-			return (false);
-		else if (str[0] == '.' || str[strlen(str) - 1] == '.')
-			return (false);
-		if (str[i] == '.')
-			flag++;
-	}
-	if (flag > 1)
-		return (false);
-	return (true);
-}
-
-bool check_range(char *token, int i)
-{
-	int num = atoi(token);
-	if (i == 1 && num > 0 && num < 2024)
-		return (true);
-	else if (i == 2 && num > 0 && num < 13)
-		return (true);
-	else if (i == 3 && num > 0 && num < 32)
-		return (true);
-	else if (i == 4 && num > 0 && num < 1000)
-		return (true);
-	return (false);
-}
-
 std::string check_date (std::string date)
 {
 	char *str = strdup(date.c_str());
@@ -71,18 +22,6 @@ std::string check_date (std::string date)
 	if (i != 3)
 		return ("Invalid date format.");
 	free (str);
-	return ("");
-}
-
-std::string check_value (std::string value)
-{
-	char *str = strdup(value.c_str());
-	if (value.empty())
-		return ("value doesn't exist.");
-	if (!is_valid_float(str))
-		return ("invalid value");
-	if (!check_range(str, 4))
-		return ("value should be <0 => 1000>.");
 	return ("");
 }
 
@@ -135,10 +74,11 @@ void	parse_btc_price (std::list<price> &btc_price)
 	}	
 }
 
-void parse_btc_amount (std::list<amount> &btc_amount, char *file)
+void parse_btc_amount (char *file)
 {
+	std::list<amount> btc_amount;
 	std::string line;
-	std::__cxx11::list<price> btc_price;
+	std::list<price> btc_price;
 	amount my_amount;
 	std::ifstream infile(file);
 	if (!infile.good())
@@ -164,10 +104,7 @@ void parse_btc_amount (std::list<amount> &btc_amount, char *file)
 int main (int ac, char **av)
 {
 	if (ac == 2)
-	{
-		std::__cxx11::list<amount> btc_amount;
-		parse_btc_amount (btc_amount, av[1]);
-	}
+		parse_btc_amount (av[1]);
 	else
 		throw_errr((char*)"Error: could not open file.", NULL);
 	return (0);
