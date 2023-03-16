@@ -91,7 +91,7 @@ void parse_btc_amount (char *file)
 			for (std::list<price>::iterator it = btc_price.begin(); it != btc_price.end(); it++) {
 				if (my_amount.date == it->date) {
 					float value = strtof(my_amount.value.c_str(), NULL);
-					float price = strtof(it->price.c_str(), NULL);
+					float price = of(it->price.c_str(), NULL);
 					std::cout << my_amount.date << " => " << my_amount.value << " = " << value * price << std::endl;
 					break ;
 				}
