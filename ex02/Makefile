@@ -1,11 +1,11 @@
 CC		=	c++
 
-CFLAGS	=	-Wall -Wextra -Werror -std=c++98
+CFLAGS	=	-Wall -Wextra -Werror
 
 NAME	=	PmergeMe
 
 SCR		=	main.cpp \
-			PmergeMe.cpp
+			#PmergeMe.cpp
 
 all:	$(NAME)
 
