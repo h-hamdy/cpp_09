@@ -22,7 +22,11 @@ bool	is_digite(char *str)
 
 bool is_valid_float(char* str) {
 	int flag = 0;
-	for (int i = 0; str[i]; i++) {
+	int i = 0;
+
+	if (str[i] == '+')
+		i++;
+	for (; str[i]; i++) {
 		if (!isdigit(str[i]) && str[i] != '.')
 			return (false);
 		else if (str[0] == '.' || str[strlen(str) - 1] == '.')

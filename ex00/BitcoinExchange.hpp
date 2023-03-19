@@ -3,16 +3,24 @@
 
 # include <iostream>
 # include <list>
+# include <map>
 # include <vector>
 # include <fstream>
 # include <sstream>
 # include <cstdlib>
 # include <cstring>
 # include <exception>
+#include <string.h>
+
+typedef struct _Date {
+	std::string year;
+	std::string month;
+	std::string day;
+}	Date ;
 
 typedef struct btc_amount {
-	std::string date;
-	std::string value;
+	std::string 	date;
+	std::string 	value;
 } amount;
 
 typedef struct btc_price {
