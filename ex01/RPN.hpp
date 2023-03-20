@@ -4,6 +4,8 @@
 # include <iostream>
 # include <stack>
 # include <exception>
+# include <string.h>
+# include <cstdlib>
 
 void	throw_errr(char *msg, char *str);
 void 	get_rpn(char *str, std::stack<int> &rpn);

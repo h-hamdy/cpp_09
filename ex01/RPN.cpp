@@ -62,7 +62,7 @@ void	check_rpn (char *str)
 		skip_space(str, &i);
 		if (!isdigit(str[i]))
 			throw "Error.";
-			flag++;
+		flag++;
 		if (flag == 2) {
 			i++;
 			break ;
