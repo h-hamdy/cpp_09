@@ -27,11 +27,11 @@ bool is_valid_float(char* str) {
 	if (str[i] == '+')
 		i++;
 	for (; str[i]; i++) {
-		if (!isdigit(str[i]) && str[i] != '.')
+		if (!isdigit(str[i]) && str[i] != '.' && str[i] != ',')
 			return (false);
-		else if (str[0] == '.' || str[strlen(str) - 1] == '.')
+		else if (str[0] == '.' || str[strlen(str) - 1] == '.' || str[0] == ',' || str[strlen(str) - 1] == ',')
 			return (false);
-		if (str[i] == '.')
+		if (str[i] == '.' || str[i] == ',')
 			flag++;
 	}
 	if (flag > 1)

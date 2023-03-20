@@ -1,6 +1,6 @@
 # include "BitcoinExchange.hpp"
 
-int check_line (std::string date, amount my_amount, std::string value)
+int check_line (std::string date, amount &my_amount, std::string value)
 {
 	char *str = strdup(date.c_str());
 	int flag = 0;
@@ -35,13 +35,12 @@ int check_line (std::string date, amount my_amount, std::string value)
 		return 0;
 	}
 	free (str);
-	// my_amount.
-	(void)my_amount;
-	// btc_amount.push_back(btc);
+	my_amount.date = date;
+	my_amount.value = value;
 	return (1);
 }
 
-int get_data(amount my_amount, std::string line)
+int get_data(amount &my_amount, std::string line)
 {
 	std::string date;
 	std::string value;
@@ -61,8 +60,7 @@ int get_data(amount my_amount, std::string line)
 		return (0);
 	return (1);
 }
-
-void	parse_btc_price (std::list<price> &btc_price)
+void	parse_btc_price (std::map<std::string, std::string> &btc_price)
 {
 	price my_price;
 	std::string line;
@@ -74,33 +72,14 @@ void	parse_btc_price (std::list<price> &btc_price)
 		size_t pos = line.find(",");
 		my_price.date = line.substr(0, pos);
 		my_price.price = line.substr(pos + 1);
-		btc_price.push_back(my_price);
+		btc_price.insert(std::pair<std::string, std::string>(my_price.date, my_price.price));
 	}
 }
 
-// void find_nearest_date (Date date, std::list<price> &btc_price)
-// {
-// 	int year, month, day;
-	
-// 	year = (int)strtof(date.year.c_str(), NULL);
-// 	month = (int)strtof(date.month.c_str(), NULL);
-// 	day = (int)strtof(date.day.c_str(), NULL);
-// 	for (std::list<price>::iterator it = btc_price.begin(); it != btc_price.end(); ++it) {
-//         if (year > (int)strtof(it->date.c_str(), NULL)) {
-// 			it++;
-// 			continue;
-// 		}
-// 		else
-// 			std::cout << year << std::endl;
-//     }
-// }
-
 void parse_btc_amount (char *file)
 {
-	// std::map<amount> _btc_amount;
-	// std::list<amount> btc_amount;
+	std::map<std::string, std::string> btc_price;
 	std::string line;
-	std::list<price> btc_price;
 	amount my_amount;
 	std::ifstream infile(file);
 	if (!infile.good())
@@ -109,21 +88,27 @@ void parse_btc_amount (char *file)
 	int i = 0;
 	while (!infile.eof()) {
 		std::getline(infile, line);
-		if (line.compare("date | value") == 0 && i == 0)
+		if ((line.compare("date | value") == 0 && i == 0) || line.empty())
 			continue;
 		if (get_data(my_amount, line.c_str())) {
-			// my_amount = btc_amount.back();
-			std::list<price>::iterator it = btc_price.begin();
+			std::map<std::string, std::string>::iterator it = btc_price.begin();
 			for (; it != btc_price.end(); it++) {
-				// if (my_amount.date == it->date) {
-				// 	float value = strtof(my_amount.value.c_str(), NULL);
-				// 	float price = strtof(it->price.c_str(), NULL);
-				// 	std::cout << my_amount.date << " => " << my_amount.value << " = " << value * price << std::endl;
-				// 	break ;
-				// }
+				if (my_amount.date == it->first) {
+					float value = strtof(my_amount.value.c_str(), NULL);
+					float price = strtof(it->second.c_str(), NULL);
+					std::cout << my_amount.date << " => " << my_amount.value << " = " << value * price << std::endl;
+					break ;
+				}
 			}
-			// if (it == btc_price.end())
-			// 	find_nearest_date(my_amount._date, btc_price);
+			if (it == btc_price.end()) {
+				std::map<std::string, std::string>::iterator itr;
+				std::string f;
+				itr = btc_price.upper_bound(my_amount.date);
+				itr--;
+				float value = strtof(my_amount.value.c_str(), NULL);
+				float price = strtof(itr->second.c_str(), NULL);
+				std::cout << itr->first << " => " << my_amount.value << " = " << value * price << std::endl;
+			}
 		}
 		i++;
 	}
