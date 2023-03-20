@@ -20,18 +20,18 @@ bool	is_digite(char *str)
 	return (true);
 }
 
-bool is_valid_float(char* str) {
+bool is_valid_float(char* &str) {
 	int flag = 0;
 	int i = 0;
 
 	if (str[i] == '+')
 		i++;
 	for (; str[i]; i++) {
-		if (!isdigit(str[i]) && str[i] != '.' && str[i] != ',')
+		if (!isdigit(str[i]) && str[i] != '.')
 			return (false);
-		else if (str[0] == '.' || str[strlen(str) - 1] == '.' || str[0] == ',' || str[strlen(str) - 1] == ',')
+		else if (str[0] == '.' || str[strlen(str) - 1] == '.')
 			return (false);
-		if (str[i] == '.' || str[i] == ',')
+		if (str[i] == '.' )
 			flag++;
 	}
 	if (flag > 1)
@@ -41,7 +41,9 @@ bool is_valid_float(char* str) {
 
 bool check_range(char *token, int i)
 {
-	int num = atoi(token);
+	int num = std::atof(token);
+	if (num == 0 && (int)strlen(token) >= 3)
+		return (true);
 	if (i == 1 && num > 0 && num < 2024)
 		return (true);
 	else if (i == 2 && num > 0 && num < 13)

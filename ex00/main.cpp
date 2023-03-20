@@ -50,6 +50,10 @@ int get_data(amount &my_amount, std::string line)
 		return 0;
 	}
 	date = line.substr(0, pos - 1);
+	if (date.empty()) {
+		std::cerr << "Invalid date." << line << std::endl;
+		return 0;
+	}
 	if (strlen(line.c_str()) > pos + 2)
 		value = line.substr(pos + 2);
 	else {
@@ -102,9 +106,15 @@ void parse_btc_amount (char *file)
 			}
 			if (it == btc_price.end()) {
 				std::map<std::string, std::string>::iterator itr;
+				std::map<std::string, std::string>::iterator it1 = btc_price.begin();
 				std::string f;
 				itr = btc_price.upper_bound(my_amount.date);
-				itr--;
+				if (itr->first == it1->first) {
+					std::cerr << "No available nerest date." << std::endl;
+					continue;
+				}
+				else
+					itr--;
 				float value = strtof(my_amount.value.c_str(), NULL);
 				float price = strtof(itr->second.c_str(), NULL);
 				std::cout << itr->first << " => " << my_amount.value << " = " << value * price << std::endl;
