@@ -13,7 +13,7 @@ void	check_num(char **av)
 			if (!isdigit(av[i][j]) && !isspace(av[i][j]))
 				throw_err ((char *)"Invalid numbers.");
 		}
-		std::cout << av[i] << std::endl;
+		// std::cout << av[i] << std::endl;
 	}
 }
 
