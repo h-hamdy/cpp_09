@@ -5,4 +5,6 @@
 # include <array>
 # include <vector>
 
+void insertionSort(int array[], int size);
+
 #endif
