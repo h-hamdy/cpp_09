@@ -8,9 +8,11 @@ int main(int ac, char **av)
 	try {
 		check_rpn(av[1]);
 		get_rpn(av[1], rpn);
+		if (rpn.size() != 1)
+			throw "Error.";
         std::cout << rpn.top() << std::endl;
     }
 	catch (...) {
-		std::cout << "Error" << std::endl;
+		std::cout << "Error." << std::endl;
 	}
 }

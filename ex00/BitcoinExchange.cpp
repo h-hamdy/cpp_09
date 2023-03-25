@@ -44,7 +44,7 @@ bool check_range(char *token, int i)
 	int num = std::atof(token);
 	if (num == 0 && (int)strlen(token) >= 3)
 		return (true);
-	if (i == 1 && num > 0 && num < 2024)
+	if (i == 1 && num > 0 && num < 3000)
 		return (true);
 	else if (i == 2 && num > 0 && num < 13)
 		return (true);

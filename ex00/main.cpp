@@ -107,8 +107,14 @@ void parse_btc_amount (char *file)
 			if (it == btc_price.end()) {
 				std::map<std::string, std::string>::iterator itr;
 				std::map<std::string, std::string>::iterator it1 = btc_price.begin();
-				std::string f;
 				itr = btc_price.upper_bound(my_amount.date);
+				if (itr == btc_price.end()) {
+					itr--;
+					float value = strtof(my_amount.value.c_str(), NULL);
+					float price = strtof(itr->second.c_str(), NULL);
+					std::cout << itr->first << " => " << my_amount.value << " = " << value * price << std::endl;
+					continue;
+				}
 				if (itr->first == it1->first) {
 					std::cerr << "No available nerest date." << std::endl;
 					continue;

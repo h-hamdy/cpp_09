@@ -35,58 +35,52 @@ void get_rpn(char *str, std::stack<int> &rpn)
 {
 	int first_num = 0;
 	int sec_num = 0;
-	for (int i = 0; str[i]; i++) {
-		if (isspace(str[i]))
+	char sign;
+	char *n_str = removeSpaces(str);
+	int i = 0;
+	while (n_str[i])
+	{
+		if (isdigit(n_str[i]) && !is_sign(n_str[i])) {
+			rpn.push(n_str[i] - '0');
+			i++;
 			continue;
-		if (isdigit(str[i]) && !isspace(str[i]) && !is_sign(str[i]))
-			rpn.push(str[i] - '0');
-		if (is_sign(str[i])) {
+		}
+		if (rpn.size() >= 2) {
+			sign = n_str[i];
 			get_numbers(first_num, sec_num, rpn);
-			if (str[i] == '+')
+			if (sign == '+')
 				rpn.push(first_num + sec_num);
-			else if (str[i] == '-')
+			else if (sign == '-')
 				rpn.push(first_num - sec_num);
-			else if (str[i] == '*')
+			else if (sign == '*')
 				rpn.push(first_num * sec_num);
-			else if (str[i] == '/')
+			else if (sign == '/')
 				rpn.push(first_num / sec_num);
 		}
+		i++;
 	}
+}
+
+char* removeSpaces(char* str)
+{
+    char* newStr = new char[std::strlen(str) + 1];
+    int j = 0;
+
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] != ' ') {
+            newStr[j] = str[i];
+            j++;
+        }
+    }
+    newStr[j] = '\0';
+
+    return newStr;
 }
 
 void	check_rpn (char *str)
 {
-	int flag = 0;
-	int i = 0;
-	for (; str[i]; i++) {
-		skip_space(str, &i);
-		if (!isdigit(str[i]))
+	for (int i = 1; str[i]; i++) {
+		if (!isspace(str[i]) && !isdigit(str[i]) && !is_sign(str[i]))
 			throw "Error.";
-		flag++;
-		if (flag == 2) {
-			i++;
-			break ;
-		}
-	}
-	while (str[i] && str[i] == ' ')
-			i++;
-	if (is_sign(str[i]))
-		i++;	
-	else
-		throw "Error.";
-	while (str[i]) {
-		skip_space(str, &i);
-		if (isdigit(str[i])) {
-			i++;
-			skip_space(str, &i);
-			if (is_sign(str[i]))
-				i++;
-			else
-				throw "Error.";
-		}	
-		else
-			throw "Error.";
-		if (str[i])
-			i++;
 	}
 }

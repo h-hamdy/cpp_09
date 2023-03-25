@@ -13,5 +13,6 @@ void	skip_space(char *str, int *i);
 void	get_numbers(int &f_num, int &s_num, std::stack<int> &rpn);
 bool	is_sign (char c);
 void	check_rpn (char *str);
+char* 	removeSpaces(char* str);
 
 #endif
