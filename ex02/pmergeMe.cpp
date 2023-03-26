@@ -89,7 +89,7 @@ void deque_merge(std::deque<int>& deq, int left, int mid, int right) {
     for (int i = 0; i < (int)right_arr.size(); i++)
         right_arr[i] = deq[mid + 1 + i];
 
-    int i = 0, j = 0, k = 0;
+    int i = 0, j = 0, k = left;
     for (; i < (int)left_arr.size() && j < (int)right_arr.size(); k++) {
         if (left_arr[i] <= right_arr[j]) {
             deq[k] = left_arr[i];

@@ -20,7 +20,7 @@ bool	is_digite(char *str)
 	return (true);
 }
 
-bool is_valid_float(char* &str) {
+bool is_valid_float(std::string &str) {
 	int flag = 0;
 	int i = 0;
 
@@ -29,7 +29,7 @@ bool is_valid_float(char* &str) {
 	for (; str[i]; i++) {
 		if (!isdigit(str[i]) && str[i] != '.')
 			return (false);
-		else if (str[0] == '.' || str[strlen(str) - 1] == '.')
+		else if (str[0] == '.' || str[strlen(str.c_str()) - 1] == '.')
 			return (false);
 		if (str[i] == '.' )
 			flag++;
@@ -39,10 +39,10 @@ bool is_valid_float(char* &str) {
 	return (true);
 }
 
-bool check_range(char *token, int i)
+bool check_range(std::string token, int i)
 {
-	int num = std::atof(token);
-	if (num == 0 && (int)strlen(token) >= 3)
+	int num = std::atof(token.c_str());
+	if (num == 0 && (int)strlen(token.c_str()) >= 3)
 		return (true);
 	if (i == 1 && num > 0 && num < 3000)
 		return (true);
@@ -57,12 +57,11 @@ bool check_range(char *token, int i)
 
 std::string check_value (std::string value)
 {
-	char *str = strdup(value.c_str());
 	if (value.empty())
 		return ("value doesn't exist.");
-	if (!is_valid_float(str))
+	if (!is_valid_float(value))
 		return ("invalid value");
-	if (!check_range(str, 4))
+	if (!check_range(value, 4))
 		return ("value should be <0 => 1000>.");
 	return ("");
 }

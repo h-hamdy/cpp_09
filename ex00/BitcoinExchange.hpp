@@ -23,8 +23,8 @@ typedef struct btc_price {
 }	price;
 
 std::string	check_value (std::string value);
-bool 		check_range(char *token, int i);
-bool 		is_valid_float(char* &str);
+bool 		check_range(std::string token, int i);
+bool 		is_valid_float(std::string &str);
 bool		is_digite(char *str);
 void		throw_errr(char *msg, char *str);
 

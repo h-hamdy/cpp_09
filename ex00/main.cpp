@@ -2,17 +2,17 @@
 
 int check_line (std::string date, amount &my_amount, std::string value)
 {
-	char *str = strdup(date.c_str());
 	int flag = 0;
-	for (int i = 0; str[i]; i++)
-		if (str[i] == '-')
+	for (int i = 0; date[i]; i++)
+		if (date[i] == '-')
 			flag++;
 	if (flag != 2) {
 		std::cerr << "Invalid date format." << std::endl;
 		return (0);
 	}
 	int i = 0;
-	char *token = std::strtok(str, "-");
+	std::string _date = date;
+	char *token = std::strtok(const_cast<char*>(_date.c_str()), "-");
 	while (token != NULL) {
 		i++;
 		if (!is_digite(token)) {
@@ -34,7 +34,6 @@ int check_line (std::string date, amount &my_amount, std::string value)
 		std::cerr << value_msg << std::endl;
 		return 0;
 	}
-	free (str);
 	my_amount.date = date;
 	my_amount.value = value;
 	return (1);
@@ -49,9 +48,14 @@ int get_data(amount &my_amount, std::string line)
 		std::cerr << "Error: bad input => " << line << std::endl;
 		return 0;
 	}
+	if (line[pos -1] != ' ' &&  line[pos + 1] != ' ')
+	{
+		std::cerr << "Invalid date." << std::endl;
+		return 0;
+	}
 	date = line.substr(0, pos - 1);
 	if (date.empty()) {
-		std::cerr << "Invalid date." << line << std::endl;
+		std::cerr << "Invalid date " << line << std::endl;
 		return 0;
 	}
 	if (strlen(line.c_str()) > pos + 2)
@@ -107,7 +111,7 @@ void parse_btc_amount (char *file)
 			if (it == btc_price.end()) {
 				std::map<std::string, std::string>::iterator itr;
 				std::map<std::string, std::string>::iterator it1 = btc_price.begin();
-				itr = btc_price.upper_bound(my_amount.date);
+				itr = btc_price.lower_bound(my_amount.date);
 				if (itr == btc_price.end()) {
 					itr--;
 					float value = strtof(my_amount.value.c_str(), NULL);
